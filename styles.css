@@ -22,7 +22,7 @@ body {
 body {
   font-family: Georgia, "Times New Roman", serif;
   color: var(--text);
-  background: var(--bg);
+  background: #000000;
 }
 
 .shell {
