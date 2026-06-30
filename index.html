@@ -34,17 +34,68 @@
         </div>
 
         <section class="animal-strip" aria-label="Animated elephant">
-          <div class="animal-stage" aria-hidden="true">
-            <img class="animal-frame frame-1" src="1.png" alt="" />
-            <img class="animal-frame frame-2" src="2.png" alt="" />
-            <img class="animal-frame frame-3" src="3.png" alt="" />
-            <img class="animal-frame frame-4" src="4.png" alt="" />
-            <img class="animal-frame frame-5" src="5.png" alt="" />
-            <img class="animal-frame frame-6" src="6.png" alt="" />
+          <div class="animal-scroll">
+            <div class="animal-sticky">
+              <div class="animal-stage" aria-hidden="true">
+                <img class="animal-frame frame-1 is-active" src="1.png" alt="" />
+                <img class="animal-frame frame-2" src="2.png" alt="" />
+                <img class="animal-frame frame-3" src="3.png" alt="" />
+                <img class="animal-frame frame-4" src="4.png" alt="" />
+                <img class="animal-frame frame-5" src="5.png" alt="" />
+                <img class="animal-frame frame-6" src="6.png" alt="" />
+              </div>
+              <p class="animal-caption">Scroll to move the elephant.</p>
+            </div>
           </div>
-          <p class="animal-caption">A tiny elephant ear shake loop.</p>
         </section>
       </section>
     </main>
+    <script>
+      (() => {
+        const strip = document.querySelector('.animal-strip');
+        const frames = [...document.querySelectorAll('.animal-frame')];
+        if (!strip || !frames.length) return;
+
+        let ticking = false;
+        const total = frames.length;
+
+        const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+        const render = () => {
+          const rect = strip.getBoundingClientRect();
+          const viewport = window.innerHeight || document.documentElement.clientHeight;
+          const travel = rect.height - viewport;
+          const raw = travel <= 0 ? 0 : (-rect.top / travel);
+          const progress = clamp(raw, 0, 1);
+          const index = Math.min(total - 1, Math.floor(progress * total));
+          const local = progress * total - index;
+
+          frames.forEach((frame, i) => {
+            const distance = Math.abs(i - progress * (total - 1));
+            const active = i === index || i === Math.min(total - 1, index + 1);
+            frame.classList.toggle('is-active', active);
+            frame.style.opacity = String(clamp(1 - distance * 1.45, 0, 1));
+
+            const nudge = i % 2 === 0 ? -1 : 1;
+            const shake = Math.sin((progress * 18 + i) * Math.PI) * 1.2;
+            const yShift = Math.sin((progress * 8 + i) * Math.PI) * 1.4;
+            const scale = active ? 1.02 + local * 0.015 : 1;
+            frame.style.transform = `translate3d(${(progress - 0.5) * 10 + shake * nudge}px, ${yShift}px, 0) scale(${scale})`;
+          });
+          ticking = false;
+        };
+
+        const requestRender = () => {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(render);
+          }
+        };
+
+        window.addEventListener('scroll', requestRender, { passive: true });
+        window.addEventListener('resize', requestRender);
+        render();
+      })();
+    </script>
   </body>
 </html>
