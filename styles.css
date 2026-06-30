@@ -142,38 +142,44 @@ h1 {
   object-fit: cover;
   object-position: center;
   opacity: 0;
-  animation: frameSwap 7.2s infinite;
+  transform-origin: 50% 48%;
+  animation: frameSwap 3.6s infinite;
   filter: saturate(0.98) contrast(1.02);
+  will-change: opacity, transform, filter;
 }
 
 .frame-1 { animation-delay: 0s; }
-.frame-2 { animation-delay: 1.2s; }
-.frame-3 { animation-delay: 2.4s; }
-.frame-4 { animation-delay: 3.6s; }
-.frame-5 { animation-delay: 4.8s; }
-.frame-6 { animation-delay: 6s; }
+.frame-2 { animation-delay: 0.6s; }
+.frame-3 { animation-delay: 1.2s; }
+.frame-4 { animation-delay: 1.8s; }
+.frame-5 { animation-delay: 2.4s; }
+.frame-6 { animation-delay: 3s; }
 
 @keyframes frameSwap {
-  0%,
-  14% {
+  0% {
     opacity: 0;
     transform: translateX(0) scale(1);
+    filter: blur(0px) saturate(0.98) contrast(1.02);
   }
-  18% {
+  10% {
     opacity: 1;
     transform: translateX(0) scale(1.012);
+    filter: blur(0px) saturate(1) contrast(1.03);
   }
-  36% {
+  30% {
     opacity: 1;
-    transform: translateX(0) scale(1);
+    transform: translateX(0.4%) scale(1.008);
+    filter: blur(0.15px) saturate(1) contrast(1.03);
   }
   42% {
     opacity: 0;
-    transform: translateX(-0.6%) scale(1.006);
+    transform: translateX(-0.8%) scale(1.01);
+    filter: blur(0.35px) saturate(0.98) contrast(1.02);
   }
   100% {
     opacity: 0;
     transform: translateX(0) scale(1);
+    filter: blur(0px) saturate(0.98) contrast(1.02);
   }
 }
 
