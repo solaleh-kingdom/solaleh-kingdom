@@ -120,6 +120,13 @@ h1 {
   font: 1rem/1.7 system-ui, sans-serif;
 }
 
+.sync-note {
+  margin: 20px 0 0;
+  color: var(--accent-2);
+  font: 0.92rem/1.5 system-ui, sans-serif;
+  text-align: center;
+}
+
 @media (max-width: 640px) {
   .hero {
     padding: 24px;
